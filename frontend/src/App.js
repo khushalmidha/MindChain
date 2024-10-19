@@ -10,9 +10,7 @@ function App() {
   const [provider, setProvider] = useState(null);
   const [time,setTime] = useState(null);
 
-  const soulTokenAddress = "0xAc333A162DDae16d8BB8288d15D43FA795539BEf"; // Replace with your contract address
-
-  // On mount, load the provider and connect wallet
+  const soulTokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS; // Replace with your contract address
 
 
   const loadProvider = async () => {
