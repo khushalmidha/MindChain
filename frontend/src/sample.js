@@ -9,6 +9,7 @@ function Sample() {
   const [contract, setContract] = useState(null);
   const [provider, setProvider] = useState(null);
   const [time,setTime] = useState(null);
+  const [amountToReduce, setAmountToReduce] = useState(0);
 
   const soulTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
 
@@ -35,7 +36,11 @@ function Sample() {
 
   const getTokenBalance = async (contract, address) => {
     try {
-      const balance = await contract.checkNoOfTokens(address);
+      console.log(address)
+      const uaddress = ethers.getAddress(address);
+      console.log(uaddress);
+      const balance = await contract.checkNoOfTokens(uaddress);
+      console.log("hi");
       setTokenBalance(ethers.formatUnits(balance, 0)); // Token balance formatted
     } catch (error) {
       console.error("Error fetching token balance: ", error);
