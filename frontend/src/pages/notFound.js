@@ -12,7 +12,7 @@ const NotFound = () => {
                 </h1>
                 <p className='w-full mb-4 xl:mb-8 font-medium text-xl xl:text-2xl text-gray-500 dark:text-gray-300'> Breathe in, and on the out breath, go back and try again. </p>
                 <p className='pr-36 mb-4 xl:mb-8 font-light text-sm xl:text-base text-gray-500 dark:text-gray-300'>
-                    There are a lot of unknowns in the world right now. But one thing is certain — Headspace is here for you. To help support you through this time of crisis, we’re offering some free meditations you can listen to anytime.
+                    There are a lot of unknowns in the world right now. But one thing is certain — MindChain is here for you. To help support you through this time of crisis, we’re offering some free meditations you can listen to anytime.
                 </p>
                 <Button href='https://www.headspace.com/' text='Back to Home' color='blue' pX='4' pY='3' mX='0' mY='0'/>
             </div>
