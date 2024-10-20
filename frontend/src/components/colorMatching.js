@@ -37,7 +37,7 @@ const CalmColorMatching = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-5 py-5 text-gray-900">
+    <div className="min-h-screen flex flex-col items-center justify-center px-5 py-5 text-gray-900 dark:text-white dark:bg-black">
       <h1 className="text-4xl font-bold mb-8">Calm Color Matching</h1>
 
       <div className="flex flex-col items-center">
