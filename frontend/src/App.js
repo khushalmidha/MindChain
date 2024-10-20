@@ -7,6 +7,7 @@ import NotFound from "./pages/notFound.js";
 import DropdownMenu from "./components/DropDown.js";
 import Banner from "./components/Banner";
 import Activities from "./pages/activities.js";
+import CalmColorMatching from "./components/colorMatching.js";
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
        <Route path='/' element={<Home />} />
        <Route path="/activities" element={<Activities/>}/>
        <Route path='*' element={<NotFound/>} />
+        <Route path="/colormatching" element={<CalmColorMatching />}/>
        </Routes>
       
       <Footer />
