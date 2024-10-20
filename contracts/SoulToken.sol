@@ -28,19 +28,18 @@ contract SoulToken is ERC20, Ownable {
         return balanceOf(user);
     }
 
-    function reduceTokens() external {
-        // Token reduction logic
+    function reduceTokens(uint256 amount) external {
+        // Get the current balance of the user
         uint256 currentBalance = balanceOf(msg.sender);
-        require(currentBalance > 0, "Balance already zero");
 
-        uint256 reducedBalance = currentBalance / 10;
-        _burn(msg.sender, reducedBalance);
-        uint256 total;
-        if (currentBalance - reducedBalance >= 0) {
-            total = currentBalance - reducedBalance;
-        } else {
-            total = 0;
-        }
+        // Check if the balance is less than the amount to reduce
+        require(currentBalance >= amount, "Insufficient balance");
+
+        // Burn the specified amount of tokens from the user's balance
+        _burn(msg.sender, amount);
+
+        // Emit the updated balance after burning tokens
+        uint256 total = currentBalance - amount;
         emit TokensUpdated(msg.sender, total);
     }
 }
