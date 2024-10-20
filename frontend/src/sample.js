@@ -10,7 +10,7 @@ function Sample() {
   const [provider, setProvider] = useState(null);
   const [time,setTime] = useState(null);
 
-  const soulTokenAddress = "0xAc333A162DDae16d8BB8288d15D43FA795539BEf"; // Replace with your contract address
+  const soulTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
 
   // On mount, load the provider and connect wallet
 
