@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const CalmColorMatching = () => {
     const generateRandomColor = () => {
@@ -13,7 +13,7 @@ const CalmColorMatching = () => {
   const [targetColor, setTargetColor] = useState(generateRandomColor());
   const [currentColor, setCurrentColor] = useState({ r: 128, g: 128, b: 128 });
   const [score, setScore] = useState(100);
-
+  
   const handleSliderChange = (color, value) => {
     setCurrentColor((prev) => ({
       ...prev,
@@ -41,8 +41,9 @@ const CalmColorMatching = () => {
       <h1 className="text-4xl font-bold mb-8">Calm Color Matching</h1>
 
       <div className="flex flex-col items-center">
-        {/* Target Color */}
-        <div className="mb-4">
+       <div className='flex flex-row justify-evenly w-96'>
+         {/* Target Color */}
+         <div className="mb-4">
           <h2 className="text-xl font-medium mb-2">Target Color</h2>
           <div
             className="w-40 h-40 rounded-lg shadow-md"
@@ -62,6 +63,7 @@ const CalmColorMatching = () => {
             }}
           />
         </div>
+       </div>
 
         {/* RGB Sliders */}
         <div className="w-64 mb-8">
