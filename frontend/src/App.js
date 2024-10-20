@@ -8,8 +8,9 @@ import DropdownMenu from "./components/DropDown.js";
 import Banner from "./components/Banner";
 import Activities from "./pages/activities.js";
 import CalmColorMatching from "./components/colorMatching.js";
-
-
+import DivingCircleGame from "./components/DrivingCircle.js";
+import Breadth from "./components/Breadth.js";
+import Workshop from "./pages/workshop.js";
 function App() {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -40,13 +41,17 @@ function App() {
       
        <Navbar toggle={toggle}/>
        <DropdownMenu isOpen={isOpen} toggle={toggle}/>
-
+        <Workshop />
        {/* <Home /> */}
        <Routes>
        <Route path='/' element={<Home />} />
        <Route path="/activities" element={<Activities/>}/>
        <Route path='*' element={<NotFound/>} />
         <Route path="/colormatching" element={<CalmColorMatching />}/>
+        <Route path="/drivingcircle" element={<DivingCircleGame />}/>
+        <Route path="/meditate" element={<Breadth />}/>
+        <Route path="/workshop" element={<workshop />}/>
+
        </Routes>
       
       <Footer />

@@ -4,7 +4,7 @@ import image2 from '../images/1.jpeg'
 import image3 from '../images/2.jpeg'
 import image4 from '../images/3.jpeg' 
 import Card from '../components/Card';
-import CalmColorMatching from '../components/colorMatching';
+// import CalmColorMatching from '../components/colorMatching';
 // import GameSwirl from '../components/Swirl';
 const Activities = () => {
     return (
@@ -18,18 +18,19 @@ const Activities = () => {
             </div>
             <div className='flex flex-col w-screen justify-evenly'>
                <div className='flex flex-row items-center justify-evenly py-10'>
-               <Card heading={"Color-Matching"} token={3} imgsrc={image4} link1={"/colormatching"}/>
-                <Card heading={"Switch"} token={4} imgsrc={image3} link1={"/colormatching"}/>
-               
+               <Card heading={"Color-Matching"} token={10} imgsrc={image4} link1={"/colormatching"}/>
+               <Card heading={"Meditate"} token={10} imgsrc={image1} link1={"/meditate"}/>
+                               
                </div>
                <div className='flex flex-row items-center justify-evenly py-10'>
-               <Card heading={"Swirl"} token={5} imgsrc={image2} link1={"/colormatching"} />
-               <Card heading={"Meditate"} token={6} imgsrc={image1} link1={"/colormatching"}/>
+               <Card heading={"Swirl"} token={10} imgsrc={image2} link1={"/colormatching"} />
+               <Card heading={"Switch"} token={10} imgsrc={image3} link1={"/colormatching"}/>
 
                </div>
                
             </div>
             {/* <GameSwirl /> */}
+
         </div>
     );
 }

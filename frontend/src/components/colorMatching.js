@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 
 const CalmColorMatching = () => {
     const generateRandomColor = () => {
@@ -13,7 +13,7 @@ const CalmColorMatching = () => {
   const [targetColor, setTargetColor] = useState(generateRandomColor());
   const [currentColor, setCurrentColor] = useState({ r: 128, g: 128, b: 128 });
   const [score, setScore] = useState(100);
-  
+
   const handleSliderChange = (color, value) => {
     setCurrentColor((prev) => ({
       ...prev,
