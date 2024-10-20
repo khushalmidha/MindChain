@@ -57,14 +57,25 @@ function Sample() {
   };
 
   const reduceTokens = async () => {
-    if (contract) {
+    // if (contract) {
+    //   try {
+    //     const tx = await contract.reduceTokens(); // Call reduceTokens function
+    //     await tx.wait(); // Wait for the transaction to be confirmed
+    //     getTokenBalance(contract, walletAddress); // Update balance after reducing tokens
+    //   } catch (error) {
+    //     console.error("Error reducing tokens: ", error);
+    //   }
+    // }
+    if (contract && amountToReduce) {
       try {
-        const tx = await contract.reduceTokens(); // Call reduceTokens function
+        const tx = await contract.reduceTokens(ethers.toBigInt(amountToReduce)); // Pass the amount entered by the user
         await tx.wait(); // Wait for the transaction to be confirmed
         getTokenBalance(contract, walletAddress); // Update balance after reducing tokens
       } catch (error) {
         console.error("Error reducing tokens: ", error);
       }
+    } else {
+      alert("Please enter a valid amount to reduce!");
     }
   };
 
@@ -78,7 +89,17 @@ function Sample() {
           <p>Connected: {walletAddress}</p>
           <p>Token Balance: {tokenBalance} SOUL</p>
           {((time + 1)<(new Date()) ) ? (<p>Collect tokens after 24Hrs</p>):(<button onClick={earnTokens}>Earn 10 SoulTokens</button>)}
-          <button onClick={reduceTokens} disabled={tokenBalance == 0}>Reduce Tokens</button>
+          {/* <button onClick={reduceTokens} disabled={tokenBalance == 0}>Reduce Tokens</button> */}
+          {/* Input for reducing tokens */}
+          <input
+            type="number"
+            placeholder="Enter amount to reduce"
+            value={amountToReduce}
+            onChange={(e) => setAmountToReduce(e.target.value)} // Set the amountToReduce state
+          />
+          <button onClick={reduceTokens} disabled={tokenBalance == 0 || !amountToReduce}>
+            Reduce Tokens
+          </button>
         </div>
       )}
     </div>
