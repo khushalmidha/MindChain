@@ -1,4 +1,4 @@
-import { Route, BrowserRouter,Routes } from "react-router-dom";
+import { Route,Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import React, {useState, useEffect} from 'react';
 import Navbar from "./components/Navbar.js";
@@ -6,6 +6,7 @@ import Home from "./pages/home.js";
 import NotFound from "./pages/notFound.js";
 import DropdownMenu from "./components/DropDown.js";
 import Banner from "./components/Banner";
+import Activities from "./pages/activities.js";
 
 
 function App() {
@@ -36,13 +37,14 @@ function App() {
     <div className='transition duration-500'>
       <Banner />
       
-      <Navbar toggle={toggle}/>
-      <DropdownMenu isOpen={isOpen} toggle={toggle}/>
+       <Navbar toggle={toggle}/>
+       <DropdownMenu isOpen={isOpen} toggle={toggle}/>
 
-      {/* <Home /> */}
+       {/* <Home /> */}
        <Routes>
        <Route path='/' element={<Home />} />
-        <Route path='*' element={<NotFound/>} />
+       <Route path="/activities" element={<Activities/>}/>
+       <Route path='*' element={<NotFound/>} />
        </Routes>
       
       <Footer />
