@@ -52,7 +52,7 @@ const Meditation = () => {
                                 </li>
                                 
                             </ul>
-                            <a className='flex items-center opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' href="https://www.headspace.com/meditation">
+                            <a className='flex items-center opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' href="#">
                                 <p className='text-gray-700 dark:text-gray-300 text-lg font-semibold py-1 underline '>  {t('MeditationForX.Lists.1.SeeMore')}  </p> 
                                 <FiArrowRight className='text-gray-600 dark:text-gray-300' /> 
                             </a>
@@ -125,27 +125,27 @@ const Meditation = () => {
                             <ul>
                                 <li id='meditationForX_6' className='py-1' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}> 
                                     <a className='text-gray-700 dark:text-gray-300 text-md font-semibold underline opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' 
-                                       href="https://www.headspace.com/meditation-101/what-is-meditation"> {t('MeditationForX.Lists.4.Links.1')} </a>  
+                                       href="#"> {t('MeditationForX.Lists.4.Links.1')} </a>  
                                 </li>
                                 <li id='meditationForX_7' className='py-1' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}> 
                                     <a className='text-gray-700 dark:text-gray-300 text-md font-semibold underline opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' 
-                                       href="https://www.headspace.com/meditation-101/what-is-meditation"> {t('MeditationForX.Lists.4.Links.2')} </a>  
+                                       href="#"> {t('MeditationForX.Lists.4.Links.2')} </a>  
                                 </li>
                                 <li id='meditationForX_8' className='py-1' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}> 
                                     <a className='text-gray-700 dark:text-gray-300 text-md font-semibold underline opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' 
-                                       href="https://www.headspace.com/meditation-101/what-is-meditation"> {t('MeditationForX.Lists.4.Links.3')} </a>  
+                                       href="#"> {t('MeditationForX.Lists.4.Links.3')} </a>  
                                 </li> 
                                 <li id='meditationForX_9' className='py-1' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}> 
                                     <a className='text-gray-700 dark:text-gray-300 text-md font-semibold underline opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' 
-                                       href="https://www.headspace.com/meditation-101/what-is-meditation"> {t('MeditationForX.Lists.4.Links.4')} </a>  
+                                       href="#"> {t('MeditationForX.Lists.4.Links.4')} </a>  
                                 </li>
                                 <li id='meditationForX_10' className='py-1' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}> 
                                     <a className='text-gray-700 dark:text-gray-300 text-md font-semibold underline opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' 
-                                       href="https://www.headspace.com/meditation-101/what-is-meditation"> {t('MeditationForX.Lists.4.Links.5')} </a>  
+                                       href="#"> {t('MeditationForX.Lists.4.Links.5')} </a>  
                                 </li>
                                 
                             </ul>
-                            <a className='flex items-center opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' href="https://www.headspace.com/meditation">
+                            <a className='flex items-center opacity-50 hover:opacity-100 transition-opacity duration-1000 ease-out' href="#">
                                 <p className='text-gray-700 dark:text-gray-300 text-lg font-semibold py-1 underline '> {t('MeditationForX.Lists.4.SeeMore')} </p> 
                                 <FiArrowRight className='text-gray-600 dark:text-gray-300' /> 
                             </a>

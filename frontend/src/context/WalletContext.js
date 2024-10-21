@@ -15,55 +15,50 @@ const WalletProvider = ({ children }) => {
   const contractAddress = "0x0848590E57E255Ad63F774559F54F5BDa21Ec648"; // Replace with actual address
 
   // Connect Wallet
-  useEffect(()=>{
-    const providerInstance = new ethers.BrowserProvider(window.ethereum);
-    const userSigner = providerInstance.getSigner();
-    setSigner(userSigner);
-    const contractInstance = new ethers.Contract(contractAddress, SoulTokenABI, userSigner);
-    setContract(contractInstance);
-  },[])
+  
   const connectWallet = useCallback(async () => {
     try {
       if (!window.ethereum) {
         alert('MetaMask not detected. Please install MetaMask.');
         return;
       }
-
       const providerInstance = new ethers.BrowserProvider(window.ethereum);
+      const userSigner = await providerInstance.getSigner();
+      setSigner(userSigner);
+
+      const contractInstance = new ethers.Contract(contractAddress, SoulTokenABI, userSigner);
+      setContract(contractInstance);
+      
       const accounts = await providerInstance.send('eth_requestAccounts', []);
       const userAddress = accounts[0];
-
-      
-      
-
       setWalletAddress(userAddress);
       setProvider(providerInstance);
-      
-
-      await fetchBalance(userAddress); // Fetch initial balance
+      const tokenBalance = await contractInstance.checkNoOfTokens(userAddress);
+      setBalance(ethers.formatUnits(tokenBalance, 0)) // Fetch initial balance
     } catch (error) {
       console.error('Wallet connection failed:', error);
     }
-  }, []);
+  }, [contract]);
 
   // Fetch Balance
-  const fetchBalance = useCallback(async (address = walletAddress) => {
+  const fetchBalance = async () => {
     try {
-      if (!contract) return;
-      const tokenBalance = await contract.checkNoOfTokens(address);
+
+      const tokenBalance = await contract.checkNoOfTokens(walletAddress);
       setBalance(ethers.formatUnits(tokenBalance, 0)); // Access utils via ethers
     } catch (error) {
       console.error('Error fetching token balance:', error);
     }
-  }, [contract, walletAddress]);
+  };
 
   // Earn Tokens
   const earnTokens = useCallback(async () => {
     try {
-      if (!contract) return;
+      if (!contract){
+        return;
+      }
       const tx = await contract.earnTokens();
       await tx.wait();
-      alert('Tokens earned successfully!');
       await fetchBalance();
     } catch (error) {
       console.error('Error earning tokens:', error);
@@ -73,16 +68,44 @@ const WalletProvider = ({ children }) => {
   // Reduce Tokens
   const reduceTokens = useCallback(async (amount) => {
     try {
-      if (!contract) return;
-      const amountInWei = ethers.parseUnits(amount.toString(), 18); // Access utils via ethers
+      // Ensure contract is initialized
+      if (!contract) {
+        console.error("Contract is not initialized.");
+        return;
+      }
+  
+      // Check if amount is valid
+      if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid token amount to reduce.");
+        return;
+      }
+  
+      // Convert amount to token's smallest unit (e.g., wei for 18 decimals)
+      const amountInWei = ethers.parseUnits(amount.toString(), 0); 
+      console.log(amountInWei)
+      console.log(balance)
+      // Call reduceTokens from the contract
       const tx = await contract.reduceTokens(amountInWei);
+      
+      // Wait for transaction confirmation
       await tx.wait();
-      alert('Tokens reduced successfully!');
-      await fetchBalance();
+  
+      // Success alert and fetch the updated balance
+      alert('Purchase Successful!');
+      await fetchBalance(); // Refresh balance after the transaction
+  
     } catch (error) {
-      console.error('Error reducing tokens:', error);
+      // Detailed error handling for better debugging
+      if (error.code === 'INSUFFICIENT_FUNDS') {
+        alert('You do not have enough tokens to reduce that amount.');
+      } else {
+        console.error('Error reducing tokens:', error);
+        alert('An error occurred while reducing tokens. Please try again.');
+      }
     }
   }, [contract, fetchBalance]);
+  
+  
 
   // Disconnect Wallet
   const disconnectWallet = useCallback(() => {
@@ -96,17 +119,17 @@ const WalletProvider = ({ children }) => {
 
   // Effect to detect account change
   useEffect(() => {
-    if (window.ethereum) {
-      const providerInstance = new ethers.BrowserProvider(window.ethereum);
-      window.ethereum.on('accountsChanged', async (accounts) => {
-        if (accounts.length > 0) {
-          await connectWallet();
-        } else {
-          disconnectWallet();
-        }
-      });
-    }
-  }, [connectWallet, disconnectWallet]);
+      if (window.ethereum) {
+        const providerInstance = new ethers.BrowserProvider(window.ethereum);
+        window.ethereum.on('accountsChanged', async (accounts) => {
+          if (accounts.length > 0) {
+            await connectWallet();
+          } else {
+            disconnectWallet();
+          }
+        });
+      }
+    }, [connectWallet, disconnectWallet]);
 
   return (
     <WalletContext.Provider

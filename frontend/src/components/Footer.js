@@ -10,9 +10,9 @@ const Footer = () => {
 
     const { t, i18n } = useTranslation();
 
-    function handleChange(event){
-        i18n.changeLanguage(event.target.value);
-    }
+    // function handleChange(event){
+    //     i18n.changeLanguage(event.target.value);
+    // }
 
 
     return (
@@ -31,33 +31,25 @@ const Footer = () => {
             <div className='flex w-2/5 justify-around'>
 
                 <div className='flex items-center'>
-                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="https://www.facebook.com/Headspace">
+                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="#">
                         <FaFacebookF /> 
                     </a>
-                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="https://www.instagram.com/headspace/">
+                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="#">
                         <FaInstagram />
                     </a>
-                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="https://www.linkedin.com/company/headspace-meditation-limited/">
+                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="#">
                         <FaLinkedinIn />
                     </a>
-                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="https://twitter.com/Headspace">
+                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="#">
                         <FaTwitter />
                     </a>
-                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="https://www.youtube.com/user/Getsomeheadspace">
+                    <a className='p-2 mr-4 text-gray-600 hover:text-gray-700 bg-white rounded-full' href="#">
                         <FaYoutube />
                     </a>
                     
                 </div>
 
-                <select onChange={handleChange}
-                    className="outline-none appearance-none py-2 px-3 text-white bg-gray-600 border-white border-2 text-base rounded-full cursor-pointer">
-                    <option value='en' > 
-                        {t('Footer.SelectLanguage.en')} 
-                    </option>
-                    <option value='it' >
-                        {t('Footer.SelectLanguage.it')} 
-                    </option>
-                </select>
+               
 
             </div>
 

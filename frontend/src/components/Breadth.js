@@ -1,21 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 // import "./App.css";
-import "./Breadth.css"
+import "./Breadth.css";
 import playImg from "../assets/svg/play.svg";
 import pauseImg from "../assets/svg/pause.svg";
 import rainImg from "../assets/svg/rain.svg";
 import beachImg from "../assets/svg/beach.svg";
 import rainAudio from "../assets/sounds/rain.mp3";
 import beachAudio from "../assets/sounds/beach.mp3";
+import { WalletContext } from "../context/WalletContext";
 
 export default function Breadth() {
   let [time, setTime] = useState();
   let [date, setDate] = useState();
-  let [duration, setDuration] = useState(120);
+  let [duration, setDuration] = useState(10);
   let [sound, setSound] = useState(rainAudio);
   let [playing, setPlaying] = useState(false);
   let [track, setTrack] = useState("Rainy!");
+  let [isTimerFinished, setIsTimerFinished] = useState(false); // Track if timer finished
   let audioRef = useRef(null);
+  const { earnTokens } = useContext(WalletContext);
 
   let todayTime = () => {
     setInterval(updateTodaysTime, 1000);
@@ -52,6 +55,7 @@ export default function Breadth() {
     setPlaying(false);
     audioRef.current.currentTime = 0;
     updateProgressBar();
+    setIsTimerFinished(false); // Reset the timer finished state
   };
 
   let updateProgressBar = () => {
@@ -69,10 +73,28 @@ export default function Breadth() {
     resetTimer();
   };
 
+  const redeemTokenHandler = async() => {
+    try{
+      await earnTokens()
+      alert("Successfully Redemmed 10 soul tokens")
+      setIsTimerFinished(false)
+    }
+    catch(e){
+      alert("Error in redemming tokens. Please Try again")
+    }
+     
+    // Here you can call an API to handle the redeem logic
+  };
+
   useEffect(() => {
-    if (duration === Math.ceil(audioRef.current.currentTime)) {
+    if (audioRef.current && duration === Math.ceil(audioRef.current.currentTime)) {
       resetTimer();
       playPauseSongHandler();
+      setIsTimerFinished(true); // Mark timer as finished when the audio ends
+      window.scrollTo({
+        top: document.documentElement.scrollHeight, // Scroll to bottom of the page
+        behavior: 'smooth' // Optional for smooth scrolling
+      });
     }
     todayTime();
     updateProgressBar();
@@ -80,21 +102,20 @@ export default function Breadth() {
 
   return (
     <div className="App  dark:bg-black">
-      
       <main className="App-content">
         <div className="duration-content">
           <h2>Duration</h2>
           <h4 className="selected_duration">
-            Selected Duration: {duration / 60} minutes.
+            Selected Duration: {duration } seconds.
           </h4>
           <button
             className="duration-btn"
             onClick={(e) => {
-              setDuration(120);
+              setDuration(10);
               resetTimer();
             }}
           >
-            2 minutes
+            10 Seconds
           </button>
           <button
             className="duration-btn"
@@ -116,6 +137,8 @@ export default function Breadth() {
           </button>
         </div>
         <div className="timer-content">
+           {/* Display redeem button when timer finishes */}
+        
           <img
             src={playImg}
             alt="play"
@@ -161,7 +184,9 @@ export default function Breadth() {
               ? getTimeFormat(duration - audioRef.current.currentTime)
               : "0:00"}
           </h1>
+          
         </div>
+
         <div className="sound-content">
           <h2>Tracks</h2>
           <h4 className="selected_track">Selected Track: {track}</h4>
@@ -184,6 +209,8 @@ export default function Breadth() {
             <img src={beachImg} alt="beach" className="beach-img"></img>
           </button>
         </div>
+
+       
       </main>
       <audio
         ref={audioRef}
@@ -192,6 +219,14 @@ export default function Breadth() {
         onTimeUpdate={updateProgressBar}
         src={sound}
       ></audio>
+      {isTimerFinished && (
+          
+          <div className="py-6">
+            <button className="bg-white text-blue-900 font-extrabold h-14 p-4 border rounded-md border-black hover:text-white  hover:bg-blue-600" onClick={redeemTokenHandler}>
+            Redeem 10 SOL Tokens
+          </button>
+          </div>
+      )}
     </div>
   );
 }

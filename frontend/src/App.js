@@ -50,7 +50,7 @@ function App() {
         <Route path="/colormatching" element={<CalmColorMatching />}/>
         <Route path="/drivingcircle" element={<DivingCircleGame />}/>
         <Route path="/meditate" element={<Breadth />}/>
-        <Route path="/workshop" element={<workshop />}/>
+        <Route path="/workshop" element={<Workshop />}/>
 
        </Routes>
       

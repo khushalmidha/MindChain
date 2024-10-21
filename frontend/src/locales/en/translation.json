@@ -5,8 +5,8 @@
     },
 
     "Navbar": {
-        "Articles": "Articles",
-        "Meditation": "Meditation",
+        "Articles": "Activities",
+        "Meditation": "Workshop",
         "Sleep": "Sleep",
         "Stress": "Stress",
         "About": "About",
@@ -161,7 +161,7 @@
 
     "Footer": {
         "List": {
-            "MindChain": "© 2021 MindChain Inc.",
+            "MindChain": "© 2024 MindChain Inc.",
             "Terms": "Terms",
             "PrivacyPolicy": "Privacy Policy",
             "CookiePolicy": "Cookie Policy",

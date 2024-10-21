@@ -11,6 +11,11 @@ const Navbar = (props) => {
   const [dropdown, setDropdown] = useState(false);
   const [colorTheme, setColorTheme] = useDarkMode();
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
+
+    function handleChange(event){
+        i18n.changeLanguage(event.target.value);
+    }
 
   const onMouseEnter = () => {
     if (window.innerWidth < 1250) {
@@ -56,39 +61,38 @@ const Navbar = (props) => {
           </span>
         </div>
 
-        <div>
+        <div className='flex items-center justify-center'>
           <ul className="ml-16 pr-8 lg:flex hidden text-gray-700 h-20">
             <li id='articles' className='flex items-center' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-              <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://www.headspace.com/articles'> {t('Navbar.Articles')} </a>
+              <Link className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" to={"/activities"}> {t('Navbar.Articles')} </Link>
               {dropdown && <DropdownMegamenu />}
             </li>
             <li id='meditation' className='flex items-center'>
-              <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://www.headspace.com/meditation'> {t('Navbar.Meditation')} </a>
-            </li>
-            <li className='flex items-center'>
-              <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://www.headspace.com/sleep'> {t('Navbar.Sleep')} </a>
-            </li>
-            <li className='flex items-center'>
-              <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://www.headspace.com/stress'> {t('Navbar.Stress')} </a>
+              <Link className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" to={"/workshop"}> {t('Navbar.Meditation')} </Link>
             </li>
           </ul>
+          {/* <div className="ml-4">
+          <WalletProfile />
+        </div> */}
         </div>
       </div>
 
-      <div className='flex items-center'>
-        <div className="pr-8 md:block hidden text-gray-700">
-          <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://www.headspace.com/about-us'> {t('Navbar.About')} </a>
-          <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://www.headspace.com/work'> {t('Navbar.Work')} </a>
-          <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://help.headspace.com/hc/en-us'> {t('Navbar.Help')} </a>
-          <a className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" href='https://www.headspace.com/login'> {t('Navbar.Login')} </a>
-        </div>
-
-        <Button href='https://www.headspace.com/subscriptions' text={t('Navbar.Button')} color='blue' hiddenOnSmallScreen='true' pX='4' pY='3' mX='0' mY='0' />
-
+      <div className='flex items-center justify-between w-72'>
         {/* Wallet Profile Component */}
-        <div className="ml-4">
-          <WalletProfile />
+        
+        
+        <div>
+        <select onChange={handleChange}
+                    className="outline-none appearance-none py-2 px-3 text-white bg-gray-600 border-white border-2 text-base rounded-full cursor-pointer">
+                    <option value='en' > 
+                        {t('Footer.SelectLanguage.en')} 
+                    </option>
+                    <option value='it' >
+                        {t('Footer.SelectLanguage.it')} 
+                    </option>
+                </select>
         </div>
+        <WalletProfile />
       </div>
     </nav>
   );

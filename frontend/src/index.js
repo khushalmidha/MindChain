@@ -12,7 +12,7 @@ root.render(
   <React.StrictMode>
      <Router>
       <Suspense fallback="loading">
-        <WalletProvider><Sample /></WalletProvider>
+        <WalletProvider><App /></WalletProvider>
       </Suspense>
       </Router>
   </React.StrictMode>

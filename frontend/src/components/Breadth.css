@@ -142,8 +142,18 @@
       min-height: 50vh;
     }
   }
+ 
   
+  .redeem-content{
+      height: 12PX;
+  }
   
+
+  .redeem-content button{
+    /* width:; */
+    color: azure;
+    background-color: blue;
+  }
   
   
   

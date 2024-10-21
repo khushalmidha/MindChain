@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import image from '../images/404-image.png'
-const workshopCard = ({heading,token,imgsrc,link1}) => {
+import { WalletContext } from '../context/WalletContext';
+const WorkshopCard = ({heading,token,imgsrc,link1}) => {
+  const { walletAddress, reduceTokens } = useContext(WalletContext);
     return (
         <div>
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -72,14 +74,16 @@ const workshopCard = ({heading,token,imgsrc,link1}) => {
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                            {token} sol
+                            {token} soul
                         </span>
-                        <a
-                            href={link1}
+                        <button
+                            onClick={async ()=>{await reduceTokens(token);
+                                alert("Purchase Successful");
+                            }}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             Buy
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -88,4 +92,4 @@ const workshopCard = ({heading,token,imgsrc,link1}) => {
     );
 }
 
-export default workshopCard;
+export default WorkshopCard;
