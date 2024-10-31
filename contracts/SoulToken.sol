@@ -3,15 +3,19 @@ pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract SoulToken is ERC20, Ownable {
     event TokensEarned(address indexed user, uint256 amount);
     event TokensUpdated(address indexed user, uint256 amount);
 
+    IERC20 public pyusd;
+
     constructor(
-        address initialOwner
+        address initialOwner,
+        address pyusdAddress
     ) ERC20("SoulToken", "SOUL") Ownable(initialOwner) {
-        // Mint initial supply for the owner (deployer or specified owner)
+        pyusd = IERC20(pyusdAddress);
         _mint(initialOwner, 1000 * 10);
     }
 
@@ -31,9 +35,13 @@ contract SoulToken is ERC20, Ownable {
     function reduceTokens(uint256 amount) external {
         // Get the current balance of the user
         uint256 currentBalance = balanceOf(msg.sender);
-
+        require(pyusd.balanceOf(msg.sender) >= amount, "Insufficient balance");
         // Check if the balance is less than the amount to reduce
         require(currentBalance >= amount, "Insufficient balance");
+        require(
+            pyusd.transferFrom(msg.sender, address(this), amount),
+            "Transaction Failed"
+        );
 
         // Burn the specified amount of tokens from the user's balance
         _burn(msg.sender, amount);
