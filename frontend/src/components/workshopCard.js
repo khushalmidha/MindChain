@@ -74,7 +74,7 @@ const WorkshopCard = ({heading,token,imgsrc,link1}) => {
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                            {token} soul
+                            {token} PYUSD
                         </span>
                         <button
                             onClick={async ()=>{await reduceTokens(token);

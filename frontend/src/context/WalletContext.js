@@ -119,16 +119,16 @@ const WalletProvider = ({ children }) => {
       console.log(balance)
 
       const approvalTx = await pyusdContract.increaseApproval(walletAddress, amountInPyusd);
-      await approvalTx.wait();
+      // await approvalTx.wait();
 
       const tx = await pyusdContract.transferFrom(walletAddress, OwnerAddress, amountInPyusd,{gasLimit:100000});
-      await tx.wait();
+      // await tx.wait();
 
       // Call reduceTokens from the contract
-      tx = await contract.reduceTokens(amountInWei);
+      const txr = await contract.reduceTokens(amountInWei);
 
       // Wait for transaction confirmation
-      await tx.wait();
+      await txr.wait();
 
       // Success alert and fetch the updated balance
       alert('Purchase Successful!');
