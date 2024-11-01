@@ -7,6 +7,7 @@ import ERC20_ABI from "../ABI/ERC20_ABI.json";
 export const WalletContext = createContext();
 
 const WalletProvider = ({ children }) => {
+  const OwnerAddress="0x8Cd1d4f80e1d34410a3792c12f61DE71a59F0a56";
   const [walletAddress, setWalletAddress] = useState(null);
   const [balance, setBalance] = useState('0');
   const [provider, setProvider] = useState(null);
@@ -17,7 +18,7 @@ const WalletProvider = ({ children }) => {
 
   const contractAddress = "0x7B5E82B74A6B97dbfa84A4aD8cD4bE2D87bf4c93"; // Replace with actual address
   // const pyusdAddress = "0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9";
-  const pyusdAddress = "0x669e9c75C6AebBA41f86D39E727FCedd89D5Ea53";
+  const pyusdAddress = "0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9";
   // Connect Wallet
 
   const connectWallet = useCallback(async () => {
@@ -29,33 +30,33 @@ const WalletProvider = ({ children }) => {
       const providerInstance = new ethers.BrowserProvider(window.ethereum);
       const userSigner = await providerInstance.getSigner();
       setSigner(userSigner);
-      console.log(userSigner);
-      console.log("1");
+      // console.log(userSigner);
+      // console.log("1");
 
       const contractInstance = new ethers.Contract(contractAddress, SoulTokenABI, userSigner);
       setContract(contractInstance);
-      console.log("2");
+      // console.log("2");
 
-      const pyusdContract = new ethers.Contract(pyusdAddress, ERC20_ABI, userSigner);
-      setPyusdContract(pyusdContract);
-      console.log(contractInstance);
-      console.log(pyusdContract);
-      console.log("3");
+      const pyusdContractu = new ethers.Contract(pyusdAddress, ERC20_ABI, userSigner);
+      setPyusdContract(pyusdContractu);
+      // console.log(contractInstance);
+      console.log(pyusdContractu);
+      // console.log("3");
 
       const accounts = await providerInstance.send('eth_requestAccounts', []);
       const userAddress = accounts[0];
       setWalletAddress(userAddress);
       setProvider(providerInstance);
-      console.log("4");
+      // console.log("4");
 
       const tokenBalance = await contractInstance.checkNoOfTokens(userAddress);
       setBalance(ethers.formatUnits(tokenBalance, 0)) // Fetch initial balance
       console.log(tokenBalance);
-      console.log("5");
+      // console.log("5");
 
-      // const pyusdBalance = await pyusdContract?.balanceOf(walletAddress);
-      // setPyusdBalance(pyusdBalance);
-      // console.log(pyusdBalance);
+      // const pyusdBalanceu = await pyusdContractu?.balanceOf(walletAddress);
+      // setPyusdBalance(pyusdBalanceu);
+      // console.log(pyusdBalanceu);
       // console.log("6");
 
     } catch (error) {
@@ -70,13 +71,13 @@ const WalletProvider = ({ children }) => {
       // const tokenBalance = await contract.checkNoOfTokens(walletAddress);
       const tokenBalance = await contract.connect(provider).checkNoOfTokens(walletAddress);
       setBalance(ethers.formatUnits(tokenBalance, 0)); // Access utils via ethers
-
+      console.log("Token balance: "+ tokenBalance);
       // Fetch PYUSD balance
-      const pyusdBalance = await pyusdContract?.balanceOf(walletAddress);
-      console.log("PYUSD Balance:", ethers.formatUnits(pyusdBalance, 6));
+      const pyusdBalanceu = await pyusdContract?.balanceOf(walletAddress);
+      console.log("PYUSD Balance:", ethers.formatUnits(pyusdBalanceu, 6));
 
-      setPyusdBalance(pyusdBalance);
-      console.log(pyusdBalance);
+      setPyusdBalance(pyusdBalanceu);
+      console.log(pyusdBalanceu);
     } catch (error) {
       console.error('Error fetching token balance:', error);
     }
@@ -117,10 +118,10 @@ const WalletProvider = ({ children }) => {
       console.log(amountInWei)
       console.log(balance)
 
-      const approvalTx = await pyusdContract.approve(contractAddress, amountInPyusd);
+      const approvalTx = await pyusdContract.increaseApproval(walletAddress, amountInPyusd);
       await approvalTx.wait();
 
-      const tx = await pyusdContract.transferFrom(walletAddress, contractAddress, amountInPyusd);
+      const tx = await pyusdContract.transferFrom(walletAddress, OwnerAddress, amountInPyusd,{gasLimit:100000});
       await tx.wait();
 
       // Call reduceTokens from the contract
