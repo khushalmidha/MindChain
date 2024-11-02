@@ -1,6 +1,6 @@
 // src/context/WalletContext.js
 import React, { createContext, useState, useCallback, useEffect } from 'react';
-import { ethers } from 'ethers'; // Only import ethers
+import { ethers, MinInt256 } from 'ethers'; // Only import ethers
 import SoulTokenABI from '../ABI/SoulToken.json';
 import ERC20_ABI from "../ABI/ERC20_ABI.json";
 
@@ -111,13 +111,29 @@ const WalletProvider = ({ children }) => {
         alert("Please enter a valid token amount to reduce.");
         return;
       }
-
+      console.log(amount)
       // Convert amount to token's smallest unit (e.g., wei for 18 decimals)
-      const amountInWei = ethers.parseUnits(amount.toString(), 0);
-      const amountInPyusd = ethers.parseUnits(amount.toString(), 6);
+      var amountInWei = ethers.parseUnits(amount.toString(), 0);
+      var amountInPyusd = ethers.parseUnits(amount.toString(), 6);
       console.log(amountInWei)
+      console.log(amountInPyusd)//4000000n
       console.log(balance)
-
+     
+      if(balance>10){
+         var discount=balance%10;
+         discount=Math.min(discount,3);
+         if(discount==3){
+          amountInWei=30n
+          amountInPyusd-=3000000n
+         }else
+         {
+          discount=ethers.toBigInt(discount);
+          console.log(discount)
+          amountInWei=discount*10n;
+          amountInPyusd-=discount*1000000n;
+         }
+          
+      }
       const approvalTx = await pyusdContract.increaseApproval(walletAddress, amountInPyusd);
       // await approvalTx.wait();
 
