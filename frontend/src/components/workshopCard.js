@@ -14,7 +14,6 @@ const WorkshopCard = ({heading,token,imgsrc,link1}) => {
         setSoulToken(val);
         setPyusdToken(PyusdT);
       }
-
       handleFetchDiscount()
   },[balance, token])
     return (

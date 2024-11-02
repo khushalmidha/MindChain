@@ -68,9 +68,7 @@ const WalletProvider = ({ children }) => {
     }
     const tx = await contract.earnTokens();
     await tx.wait();
-    await contract.on("TokensUpdated", (user,tokens)=>{
-      setBalance(ethers.formatUnits(tokens, 0));
-    })
+    await fetchBalance();
     return true;
   }, [contract, fetchBalance]);
 
@@ -92,9 +90,7 @@ const WalletProvider = ({ children }) => {
       await approvalTz.wait();
       const txr = await contract.reduceTokens(amountInWei);
       await txr.wait();
-      await contract.on("TokensUpdated", (user,tokens)=>{
-        setBalance(ethers.formatUnits(tokens, 0));
-      })
+      await fetchBalance();
       // Success alert and fetch the updated balance
       alert('Purchase Successful!');
       // await fetchBalance(); // Refresh balance after the transaction
