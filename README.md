@@ -4,7 +4,7 @@ MindChain is a **blockchain-integrated platform** where users can earn **Soul To
 ---
 
 ## **Demo & Deployed Site 🌐**  
-- **[Demo Video](https://www.loom.com/share/ef1fa5de51c94bd0868c71f94e206632?sid=a2d206b3-a709-40d4-9564-992e5b01a124)**
+- **[Demo Video]((https://www.loom.com/share/a4d540dff19847e7a8d831a53708db51?sid=c14432f2-0e34-42fe-b6c5-34993cc3709b))**
 - **[Live Site](https://mind-chain.vercel.app/)**
 
 ---
@@ -87,6 +87,7 @@ MindChain/
 ## **Future Improvements 🌱**
 - **More Workshops:** Expand the workshop catalog based on user demand.
 - **Leaderboard:** Add a leaderboard to encourage friendly competition among users.
+- **Transaction History:** View tokens transactions
 
 ---
 
