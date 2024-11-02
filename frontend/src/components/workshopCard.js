@@ -1,8 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import image from '../images/404-image.png'
 import { WalletContext } from '../context/WalletContext';
 const WorkshopCard = ({heading,token,imgsrc,link1}) => {
-  const { walletAddress, reduceTokens } = useContext(WalletContext);
+  const { pyusdBalance,balance,walletAddress, reduceTokens } = useContext(WalletContext);
+  const [soulToken,setSoulToken]=useState(0);
+  const [pyusdToken,setPyusdToken]=useState("0");
+  useEffect(()=>{
+    const handleFetchDiscount =() => {
+        var val = Math.min(balance,300);
+        var discount = val/100;    //285/100 ->2.85   
+        var soulToken=val;
+        var PyusdT=String(token-discount);
+        setSoulToken(val);
+        setPyusdToken(PyusdT);
+      }
+
+      handleFetchDiscount()
+  },[balance, token])
     return (
         <div>
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -77,13 +91,16 @@ const WorkshopCard = ({heading,token,imgsrc,link1}) => {
                             {token} PYUSD
                         </span>
                         <button
-                            onClick={async ()=>{await reduceTokens(token);
+                            onClick={async ()=>{await reduceTokens(token);//soul token ,pyusd
                                 alert("Purchase Successful");
                             }}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             Buy
                         </button>
+                    </div>
+                    <div className=' text-red-500 font-semibold'>
+                        Get at <span className='font-bold text-red-600'>{pyusdToken}  PYUSD</span> using Soul Tokens
                     </div>
                 </div>
             </div>
