@@ -5,7 +5,7 @@ import { FaWallet, FaSpinner, FaPowerOff, FaCopy } from 'react-icons/fa';
 // import { Tooltip } from 'react-tooltip'; // Optional tooltip for better UX
 
 const WalletProfile = () => {
-  const { walletAddress, balance, connectWallet, disconnectWallet, fetchBalance } = useContext(WalletContext);
+  const {pyusdBalance, walletAddress, balance, connectWallet, disconnectWallet, fetchBalance } = useContext(WalletContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false); // Track copy status
@@ -54,15 +54,20 @@ const WalletProfile = () => {
 
               {/* Balance Section with Spinner */}
               <div className="flex items-center justify-between mb-4">
-                <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                  Balance: {balance}
+                <p className="text-md font-semibold text-gray-800 dark:text-gray-100">
+                  SOUL Tokens: {balance}
                 </p>
                 <FaSpinner
                   className={`text-xl cursor-pointer ${isLoading ? 'animate-spin' : ''}`}
                   onClick={handleFetchBalance}
                 />
               </div>
-
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-md font-semibold text-gray-800 dark:text-gray-100">
+                  PYUSD Tokens: {pyusdBalance}
+                </p>
+                
+              </div>    
               {/* Disconnect Button */}
               <button
                 onClick={disconnectWallet}
