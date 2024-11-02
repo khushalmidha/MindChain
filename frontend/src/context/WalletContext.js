@@ -13,7 +13,7 @@ const WalletProvider = ({ children }) => {
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [contract, setContract] = useState(null);
-  const [pyusdBalance, setPyusdBalance] = useState(null);
+  const [pyusdBalance, setPyusdBalance] = useState(0);
   const [pyusdContract, setPyusdContract] = useState(null);
 
   const contractAddress = "0x7B5E82B74A6B97dbfa84A4aD8cD4bE2D87bf4c93"; // Replace with actual address
@@ -195,6 +195,7 @@ const WalletProvider = ({ children }) => {
   return (
     <WalletContext.Provider
       value={{
+        pyusdBalance,
         walletAddress,
         balance, //change here to balance
         provider,
