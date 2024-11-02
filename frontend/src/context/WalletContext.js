@@ -3,13 +3,14 @@ import React, { createContext, useState, useCallback, useEffect } from 'react';
 import { ethers, MinInt256 } from 'ethers'; // Only import ethers
 import SoulTokenABI from '../ABI/SoulToken.json';
 import ERC20_ABI from "../ABI/ERC20_ABI.json";
-
+import { toast } from 'react-toastify';
+import { use } from 'i18next';
 export const WalletContext = createContext();
 
 const WalletProvider = ({ children }) => {
   const OwnerAddress="0x8Cd1d4f80e1d34410a3792c12f61DE71a59F0a56";
   const [walletAddress, setWalletAddress] = useState(null);
-  const [balance, setBalance] = useState('0');
+  const [balance, setBalance] = useState(0);
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [contract, setContract] = useState(null);
@@ -30,129 +31,73 @@ const WalletProvider = ({ children }) => {
       const providerInstance = new ethers.BrowserProvider(window.ethereum);
       const userSigner = await providerInstance.getSigner();
       setSigner(userSigner);
-      // console.log(userSigner);
-      // console.log("1");
-
       const contractInstance = new ethers.Contract(contractAddress, SoulTokenABI, userSigner);
       setContract(contractInstance);
-      // console.log("2");
-
       const pyusdContractu = new ethers.Contract(pyusdAddress, ERC20_ABI, userSigner);
       setPyusdContract(pyusdContractu);
-      // console.log(contractInstance);
-      console.log(pyusdContractu);
-      // console.log("3");
-
       const accounts = await providerInstance.send('eth_requestAccounts', []);
       const userAddress = accounts[0];
       setWalletAddress(userAddress);
+      toast.success('Wallet connected successfully!');
       setProvider(providerInstance);
-      // console.log("4");
-
       const tokenBalance = await contractInstance.checkNoOfTokens(userAddress);
       setBalance(ethers.formatUnits(tokenBalance, 0)) // Fetch initial balance
-      console.log(tokenBalance);
-      // console.log("5");
-
-      // const pyusdBalanceu = await pyusdContractu?.balanceOf(walletAddress);
-      // setPyusdBalance(pyusdBalanceu);
-      // console.log(pyusdBalanceu);
-      // console.log("6");
-
+      const pyusdBalanceu = await pyusdContractu?.balanceOf(userAddress);
+      setPyusdBalance(ethers.formatUnits(pyusdBalanceu, 6));
     } catch (error) {
-      console.error('Wallet connection failed:', error);
+      toast.error('Error connecting wallet. Please try again.');
     }
   }, [contract]);
 
   // Fetch Balance
   const fetchBalance = async () => {
     try {
-
-      // const tokenBalance = await contract.checkNoOfTokens(walletAddress);
       const tokenBalance = await contract.connect(provider).checkNoOfTokens(walletAddress);
       setBalance(ethers.formatUnits(tokenBalance, 0)); // Access utils via ethers
-      console.log("Token balance: "+ tokenBalance);
-      // Fetch PYUSD balance
       const pyusdBalanceu = await pyusdContract?.balanceOf(walletAddress);
-      console.log("PYUSD Balance:", ethers.formatUnits(pyusdBalanceu, 6));
-
-      setPyusdBalance(pyusdBalanceu);
-      console.log(pyusdBalanceu);
+      setPyusdBalance(ethers.formatUnits(pyusdBalanceu, 6));
     } catch (error) {
-      console.error('Error fetching token balance:', error);
+      toast.error('Error fetching token balance!');
     }
   };
 
   // Earn Tokens
   const earnTokens = useCallback(async () => {
-    try {
-      if (!contract) {
-        return;
-      }
-      const tx = await contract.earnTokens();
-      await tx.wait();
-      await fetchBalance();
-    } catch (error) {
-      console.error('Error earning tokens:', error);
+    if (!contract) {
+      throw new Error('Connect to wallet');
     }
+    const tx = await contract.earnTokens();
+    await tx.wait();
+    await contract.on("TokensUpdated", (user,tokens)=>{
+      setBalance(ethers.formatUnits(tokens, 0));
+    })
+    return true;
   }, [contract, fetchBalance]);
 
   // Reduce Tokens
-  const reduceTokens = useCallback(async (amount) => {
+  const reduceTokens = useCallback(async (token,amount) => {
     try {
       // Ensure contract is initialized
       if (!contract) {
         console.error("Contract is not initialized.");
         return;
       }
-
-      // Check if amount is valid
       if (isNaN(amount) || amount <= 0) {
         alert("Please enter a valid token amount to reduce.");
         return;
       }
-      console.log(amount)
-      // Convert amount to token's smallest unit (e.g., wei for 18 decimals)
-      var amountInWei = ethers.parseUnits(amount.toString(), 0);
+      var amountInWei = ethers.parseUnits(token.toString(), 0);
       var amountInPyusd = ethers.parseUnits(amount.toString(), 6);
-      console.log(amountInWei)
-      console.log(amountInPyusd)//4000000n
-      console.log(balance)
-     
-      if(balance>10){
-         var discount=balance/10;
-         discount=Math.min(discount,3);
-         const intPart=Math.floor(discount);
-         const deciPart=discount-intPart;
-
-         const BigIntPart=ethers.toBigInt(intPart);
-         const BigDeciPart=ethers.toBigInt(Math.floor(deciPart*10));
-
-         if(discount==3){
-          amountInWei=30n
-          amountInPyusd-=3000000n
-         }else
-         {
-          amountInWei=ethers.toBigInt(balance);
-          amountInPyusd-=(BigIntPart*1000000n+BigDeciPart*100000n)
-         }
-          
-      }
-      const approvalTx = await pyusdContract.increaseApproval(walletAddress, amountInPyusd);
-      // await approvalTx.wait();
-
-      const tx = await pyusdContract.transferFrom(walletAddress, OwnerAddress, amountInPyusd,{gasLimit:100000});
-      // await tx.wait();
-
-      // Call reduceTokens from the contract
+      const approvalTz = await pyusdContract.increaseApproval(contractAddress, amountInPyusd);
+      await approvalTz.wait();
       const txr = await contract.reduceTokens(amountInWei);
-
-      // Wait for transaction confirmation
       await txr.wait();
-
+      await contract.on("TokensUpdated", (user,tokens)=>{
+        setBalance(ethers.formatUnits(tokens, 0));
+      })
       // Success alert and fetch the updated balance
       alert('Purchase Successful!');
-      await fetchBalance(); // Refresh balance after the transaction
+      // await fetchBalance(); // Refresh balance after the transaction
 
     } catch (error) {
       // Detailed error handling for better debugging
@@ -174,7 +119,7 @@ const WalletProvider = ({ children }) => {
     setProvider(null);
     setSigner(null);
     setContract(null);
-    alert('Wallet disconnected!');
+    toast.info('Wallet disconnected successfully!');
   }, []);
 
   // Effect to detect account change

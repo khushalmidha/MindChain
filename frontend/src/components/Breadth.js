@@ -8,6 +8,8 @@ import beachImg from "../assets/svg/beach.svg";
 import rainAudio from "../assets/sounds/rain.mp3";
 import beachAudio from "../assets/sounds/beach.mp3";
 import { WalletContext } from "../context/WalletContext";
+import { toast } from "react-toastify";
+import { t } from "i18next";
 
 export default function Breadth() {
   let [time, setTime] = useState();
@@ -75,15 +77,21 @@ export default function Breadth() {
 
   const redeemTokenHandler = async() => {
     try{
-      await earnTokens()
-      alert("Successfully Redemmed 10 soul tokens")
       setIsTimerFinished(false)
+      const res = await toast.promise(earnTokens(),{
+        pending: 'Transaction in progress ⏳',
+        success: 'Tokens Redeemed Successfully',
+        error: {
+          render({ data }) {
+            // Custom error message
+            return data?.message || 'Error in redeeming tokens. Please try again';
+          }
+        }
+      })
     }
     catch(e){
-      alert("Error in redemming tokens. Please Try again")
+      setIsTimerFinished(true)
     }
-     
-    // Here you can call an API to handle the redeem logic
   };
 
   useEffect(() => {

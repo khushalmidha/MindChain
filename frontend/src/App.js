@@ -11,10 +11,11 @@ import CalmColorMatching from "./components/colorMatching.js";
 import DivingCircleGame from "./components/DrivingCircle.js";
 import Breadth from "./components/Breadth.js";
 import Workshop from "./pages/workshop.js";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
 
   const [isOpen, setIsOpen] = useState(false);
-
   const toggle = () => {
     setIsOpen(!isOpen);
   }
@@ -38,7 +39,18 @@ function App() {
   return (
     <div className='transition duration-500'>
       <Banner />
-      
+      <ToastContainer
+        position="top-left"
+        autoClose={2000}
+        limit={5}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
        <Navbar toggle={toggle}/>
        <DropdownMenu isOpen={isOpen} toggle={toggle}/>
         {/* <Workshop /> */}

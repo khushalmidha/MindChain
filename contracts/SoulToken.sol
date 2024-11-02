@@ -32,22 +32,20 @@ contract SoulToken is ERC20, Ownable {
         return balanceOf(user);
     }
 
-    function reduceTokens(uint256 amount) external {
+    function reduceTokens(uint256 token,uint256 amount) external {
         // Get the current balance of the user
         uint256 currentBalance = balanceOf(msg.sender);
         require(pyusd.balanceOf(msg.sender) >= amount, "Insufficient balance");
         // Check if the balance is less than the amount to reduce
-        require(currentBalance >= amount, "Insufficient balance");
+        require(currentBalance >= token, "Insufficient balance");
         require(
-            pyusd.transferFrom(msg.sender, address(this), amount),
+            pyusd.transferFrom(msg.sender, owner() , amount),
             "Transaction Failed"
         );
-
         // Burn the specified amount of tokens from the user's balance
-        _burn(msg.sender, amount);
-
+        _burn(msg.sender, token);
         // Emit the updated balance after burning tokens
-        uint256 total = currentBalance - amount;
+        uint256 total = currentBalance - token;
         emit TokensUpdated(msg.sender, total);
     }
 }
