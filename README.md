@@ -1,5 +1,5 @@
 # **MindChain 🎯**  
-MindChain is a **blockchain-integrated project** where users can earn **Soul Tokens** by participating in activities and spend them to access exciting **workshops**. The entire platform is built on the Ethereum blockchain, leveraging **ethers.js** for seamless contract interaction. With **React** and **Tailwind CSS** powering the frontend, this project ensures a smooth and responsive user experience.
+MindChain is a **blockchain-integrated platform** where users can earn** Soul Tokens** by engaging in mindful activities and then redeem them for discounts on** exciting workshops**. The platform operates on the Ethereum blockchain, using **ethers.js** to facilitate secure and efficient contract interactions. We employ **PyUSD** for all transactions, providing a stable currency option for users. The frontend is built with React and styled with Tailwind CSS, ensuring a seamless, responsive, and user-friendly experience across devices.
 
 ---
 
@@ -11,7 +11,8 @@ MindChain is a **blockchain-integrated project** where users can earn **Soul Tok
 
 ## **Features 🚀**  
 - **Earn Soul Tokens:** Users receive tokens for completing activities.  
-- **Redeem for Workshops:** Tokens can be exchanged for specialized workshops.  
+- **Redeem for Workshops:** Tokens can be used to get **discount** on specialized workshops.
+- **PyUSD Transactions:** All transactions are facilitated through **PyUSD** for stability and predictability, adding a stable currency layer to the platform.
 - **Wallet Management:** Implemented using **Context API** to maintain wallet state throughout the app.  
 - **Language Support:** Integrated with **react-i18next** for bilingual support(English and Hindi).  
 - **Blockchain Integration:** Uses **Solidity smart contracts** deployed on Ethereum and interacts via **ethers.js**.  
@@ -25,7 +26,8 @@ MindChain is a **blockchain-integrated project** where users can earn **Soul Tok
   - Context API for wallet state management  
   - react-i18next for language translation  
 
-- **Blockchain:**  
+- **Blockchain:**
+  - PYUSD
   - Solidity  
   - ethers.js for blockchain interaction  
 
