@@ -120,17 +120,21 @@ const WalletProvider = ({ children }) => {
       console.log(balance)
      
       if(balance>10){
-         var discount=balance%10;
+         var discount=balance/10;
          discount=Math.min(discount,3);
+         const intPart=Math.floor(discount);
+         const deciPart=discount-intPart;
+
+         const BigIntPart=ethers.toBigInt(intPart);
+         const BigDeciPart=ethers.toBigInt(Math.floor(deciPart*10));
+
          if(discount==3){
           amountInWei=30n
           amountInPyusd-=3000000n
          }else
          {
-          discount=ethers.toBigInt(discount);
-          console.log(discount)
-          amountInWei=discount*10n;
-          amountInPyusd-=discount*1000000n;
+          amountInWei=ethers.toBigInt(balance);
+          amountInPyusd-=(BigIntPart*1000000n+BigDeciPart*100000n)
          }
           
       }
