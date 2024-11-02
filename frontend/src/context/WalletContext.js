@@ -17,7 +17,7 @@ const WalletProvider = ({ children }) => {
   const [pyusdBalance, setPyusdBalance] = useState(0);
   const [pyusdContract, setPyusdContract] = useState(null);
 
-  const contractAddress = "0x7B5E82B74A6B97dbfa84A4aD8cD4bE2D87bf4c93"; // Replace with actual address
+  const contractAddress = "0x76538d2785c93cd0f67a8411252dbb651982217b"; // Replace with actual address
   // const pyusdAddress = "0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9";
   const pyusdAddress = "0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9";
   // Connect Wallet
@@ -38,8 +38,10 @@ const WalletProvider = ({ children }) => {
       const accounts = await providerInstance.send('eth_requestAccounts', []);
       const userAddress = accounts[0];
       setWalletAddress(userAddress);
-      toast.success('Wallet connected successfully!');
       setProvider(providerInstance);
+      toast.success('Wallet connected successfully!',{
+        toastId: 'connect'
+      })
       const tokenBalance = await contractInstance.checkNoOfTokens(userAddress);
       setBalance(ethers.formatUnits(tokenBalance, 0)) // Fetch initial balance
       const pyusdBalanceu = await pyusdContractu?.balanceOf(userAddress);
@@ -47,7 +49,7 @@ const WalletProvider = ({ children }) => {
     } catch (error) {
       toast.error('Error connecting wallet. Please try again.');
     }
-  }, [contract]);
+  }, []);
 
   // Fetch Balance
   const fetchBalance = async () => {
@@ -64,7 +66,7 @@ const WalletProvider = ({ children }) => {
   // Earn Tokens
   const earnTokens = useCallback(async () => {
     if (!contract) {
-      throw new Error('Connect to wallet');
+      throw { message: 'Connect to wallet', code: 'WALLET_NOT_CONNECTED' };
     }
     const tx = await contract.earnTokens();
     await tx.wait();
@@ -74,37 +76,28 @@ const WalletProvider = ({ children }) => {
 
   // Reduce Tokens
   const reduceTokens = useCallback(async (token,amount) => {
-    try {
       // Ensure contract is initialized
       if (!contract) {
         console.error("Contract is not initialized.");
         return;
       }
-      if (isNaN(amount) || amount <= 0) {
-        alert("Please enter a valid token amount to reduce.");
-        return;
-      }
       var amountInWei = ethers.parseUnits(token.toString(), 0);
+      var amountInPyusd = ethers.parseUnits(amount.toString(), 6);
+      const txr = await contract.reduceTokens(amountInWei,amountInPyusd);
+      await txr.wait();
+      await fetchBalance();
+     
+  }, [contract, fetchBalance]);
+
+  const approveTokens = useCallback(async (amount) => {
+      if (!contract) {
+        throw { message: 'Connect to wallet', code: 'WALLET_NOT_CONNECTED' };
+      }
       var amountInPyusd = ethers.parseUnits(amount.toString(), 6);
       const approvalTz = await pyusdContract.increaseApproval(contractAddress, amountInPyusd);
       await approvalTz.wait();
-      const txr = await contract.reduceTokens(amountInWei);
-      await txr.wait();
-      await fetchBalance();
-      // Success alert and fetch the updated balance
-      alert('Purchase Successful!');
-      // await fetchBalance(); // Refresh balance after the transaction
-
-    } catch (error) {
-      // Detailed error handling for better debugging
-      if (error.code === 'INSUFFICIENT_FUNDS') {
-        alert('You do not have enough tokens to reduce that amount.');
-      } else {
-        console.error('Error reducing tokens:', error);
-        alert('An error occurred while reducing tokens. Please try again.');
-      }
-    }
-  }, [contract, fetchBalance]);
+      return true;
+  }, [contract]);
 
 
 
@@ -115,7 +108,9 @@ const WalletProvider = ({ children }) => {
     setProvider(null);
     setSigner(null);
     setContract(null);
-    toast.info('Wallet disconnected successfully!');
+    toast.info('Wallet disconnected successfully!',{
+      toastId: 'disconnect'
+    });
   }, []);
 
   // Effect to detect account change
@@ -136,6 +131,7 @@ const WalletProvider = ({ children }) => {
   return (
     <WalletContext.Provider
       value={{
+        approveTokens,
         pyusdBalance,
         walletAddress,
         balance, //change here to balance

@@ -45,11 +45,12 @@ function App() {
         limit={5}
         hideProgressBar={false}
         newestOnTop={true}
+        pauseOnFocusLoss={false}
         closeOnClick
         rtl={false}
         draggable
         pauseOnHover
-        theme="light"
+        theme="dark"
       />
        <Navbar toggle={toggle}/>
        <DropdownMenu isOpen={isOpen} toggle={toggle}/>

@@ -84,7 +84,11 @@ export default function Breadth() {
         error: {
           render({ data }) {
             // Custom error message
-            return data?.message || 'Error in redeeming tokens. Please try again';
+            if (data && data.code === 'WALLET_NOT_CONNECTED') {
+              return 'Please connect your wallet.';
+            }
+            // Handle other types of errors
+            return 'Transaction Aborted. Try again.';
           }
         }
       })

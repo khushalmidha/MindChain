@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import image from '../images/404-image.png'
 import { WalletContext } from '../context/WalletContext';
+import { toast } from 'react-toastify';
 const WorkshopCard = ({heading,token,imgsrc,link1}) => {
-  const { pyusdBalance,balance,walletAddress, reduceTokens } = useContext(WalletContext);
+  const { approveTokens,pyusdBalance,balance,walletAddress, reduceTokens,fetchBalance } = useContext(WalletContext);
   const [soulToken,setSoulToken]=useState(0);
-  const [pyusdToken,setPyusdToken]=useState("0");
+  const [pyusdToken,setPyusdToken]=useState(0);
   useEffect(()=>{
-    const handleFetchDiscount =() => {
+    const handleFetchDiscount =async () => {
         var val = Math.min(balance,300);
         var discount = val/100;    //285/100 ->2.85   
-        var soulToken=val;
-        var PyusdT=String(token-discount);
+        var PyusdT=(token-discount);
         setSoulToken(val);
         setPyusdToken(PyusdT);
       }
       handleFetchDiscount()
-  },[balance, token])
+  },[])
     return (
         <div>
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -90,8 +90,34 @@ const WorkshopCard = ({heading,token,imgsrc,link1}) => {
                             {token} PYUSD
                         </span>
                         <button
-                            onClick={async ()=>{await reduceTokens(token);//soul token ,pyusd
-                                alert("Purchase Successful");
+                            onClick={async ()=>{
+                                try{
+                                    if(!walletAddress){
+                                        toast.warning("Please connect your wallet");
+                                        return;
+                                    }
+                                    await fetchBalance();
+                                    if(pyusdBalance<pyusdToken || balance<soulToken){
+                                        toast.warning("Insufficient Balance");
+                                        return;
+                                    }
+                                    const res = await toast.promise(approveTokens(pyusdToken),{
+                                        pending: "Approving Tokens",
+                                        success: "Tokens Approved !",
+                                        error: "Approval Aborted"
+                                    })
+                                    if(res){
+                                        await toast.promise(reduceTokens(soulToken,pyusdToken),{
+                                            pending: "Purchasing Workshop",
+                                            success: "Workshop Purchased !",
+                                            error: "Purchase Aborted"
+                                        })
+                                        await fetchBalance();
+                                        return;
+                                    }
+                                }catch(err){
+                                    toast.error("Transaction Failed")
+                                }   
                             }}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
