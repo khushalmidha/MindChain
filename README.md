@@ -68,13 +68,16 @@ MindChain/
 
 2. **Wallet**
 
-   ![image](https://github.com/user-attachments/assets/b3bdc384-02c7-493c-ab82-94061f553c77)
+   ![WhatsApp Image 2024-11-05 at 13 38 37_84143a6d](https://github.com/user-attachments/assets/e643d0b4-d7b9-4d64-9943-813c61784c5f)
 
-4. **Activities**
-   ![image](https://github.com/user-attachments/assets/49e800a9-7ef8-4504-b9c4-fd0f39d824fc)
+3. **Activities**
 
-5. **Workshops**
-   ![image](https://github.com/user-attachments/assets/5290ff10-1bed-4e6b-b4d0-e73cfd2df857)
+   ![WhatsApp Image 2024-11-05 at 13 39 56_74bfffbf](https://github.com/user-attachments/assets/a7b1f3ed-f2cb-4077-bde0-15e60cb84919)
+
+
+4. **Workshops**
+   
+   ![WhatsApp Image 2024-11-05 at 13 41 50_03ab5521](https://github.com/user-attachments/assets/994fc890-ca09-4521-bafe-bb5fbbd7fe21)
 
 ---
 
