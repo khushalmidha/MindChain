@@ -60,8 +60,6 @@ function App() {
        <Route path='/' element={<Home />} />
        <Route path="/activities" element={<Activities/>}/>
        <Route path='*' element={<NotFound/>} />
-        <Route path="/colormatching" element={<CalmColorMatching />}/>
-        <Route path="/drivingcircle" element={<DivingCircleGame />}/>
         <Route path="/meditate" element={<Breadth />}/>
         <Route path="/workshop" element={<Workshop />}/>
 
