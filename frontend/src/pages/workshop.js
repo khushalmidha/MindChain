@@ -15,7 +15,7 @@ const workshop = () => {
             </div>
             <div className='flex flex-col w-screen justify-evenly'>
                 <div className='flex flex-row items-center justify-evenly py-10'>
-                    <WorkshopCard heading={"How to calm yourself"} token={3} imgsrc={image1} link1={"/colormatching"} />
+                    <WorkshopCard heading={"How to calm yourself"} token={1.5} imgsrc={image1} link1={"/colormatching"} />
                     <WorkshopCard heading={"How to stop worying and start living"} token={4} imgsrc={image1} link1={"/meditate"} />
 
                 </div>
