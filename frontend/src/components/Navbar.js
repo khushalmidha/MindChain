@@ -1,101 +1,99 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import headspaceLogo from '../images/headspace_dot.png';
-import Button from './Button';
-import DropdownMegamenu from './DropDown.js';
-import useDarkMode from '../hooks/useDarkMode.js';
-import WalletProfile from './WalletProfile'; // Import the WalletProfile component
-import { useTranslation } from 'react-i18next';
+import React, { useState, useContext, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import headspaceLogo from '../images/headspace_dot.png'
+import useDarkMode from '../hooks/useDarkMode.js'
+import WalletProfile from './WalletProfile'
+import { useTranslation } from 'react-i18next'
+import { WalletContext } from '../context/WalletContext'
+import { FaBook, FaDumbbell, FaUsers } from 'react-icons/fa'
+import { MdOutlineLightMode, MdOutlineDarkMode, MdMenu, MdClose } from 'react-icons/md'
 
-const Navbar = (props) => {
-  const [dropdown, setDropdown] = useState(false);
-  const [colorTheme, setColorTheme] = useDarkMode();
-  const { t } = useTranslation();
-  const { i18n } = useTranslation();
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [colorTheme, setColorTheme] = useDarkMode()
+  const { t } = useTranslation()
+  const { walletAddress } = useContext(WalletContext)
+  const location = useLocation()
 
-    function handleChange(event){
-        i18n.changeLanguage(event.target.value);
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [location])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
     }
-
-  const onMouseEnter = () => {
-    if (window.innerWidth < 1250) {
-      setDropdown(false);
-    } else {
-      setDropdown(true);
-    }
-  };
-
-  const onMouseLeave = () => {
-    if (window.innerWidth < 1250) {
-      setDropdown(false);
-    } else {
-      setDropdown(false);
-    }
-  };
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <nav className='flex justify-between items-center h-20 bg-white dark:bg-black text-black relative shadow-sm px-4 md:px-8 xl:px-18 2xl:px-24' role='navigation'>
-      <div className='flex items-center'>
-        <div className="pr-4 cursor-pointer lg:hidden" onClick={props.toggle}>
-          <svg className='w-6 h-6 fill-current text-black dark:text-white' fill='none' stroke='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" >
-            <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-          </svg>
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+            ? 'bg-[#fdf5eb] dark:bg-[#4b5161] shadow-md'
+            : 'bg-[#fdf5eb] dark:bg-[#4b5161]'
+          }`}>
+        <div className='w-full flex items-center justify-between h-16'>
+          <div className='flex items-center pl-4 sm:pl-6 lg:pl-8'>
+            <Link to='/' className='flex items-center gap-3'>
+              <img src={headspaceLogo} alt='MindChain Logo' className='h-10 w-10' />
+              <span className='font-bold text-2xl text-[#4b5161] dark:text-[#fdf5eb]'>
+                Mind<span className='text-[#f58b44]'>Chain</span>
+              </span>
+            </Link>
+          </div>
+
+          <div className='hidden lg:flex items-center justify-center'>
+            <Link
+              to='/workshop'
+              className='flex items-center px-4 py-2 rounded-md text-lg font-medium text-[#4b5161] dark:text-[#fdf5eb] hover:text-[#f58b44] transition-colors'>
+              <FaBook className='mr-2' size={18} />
+              <span>Workshops</span>
+            </Link>
+            <Link
+              to='/activities'
+              className='flex items-center px-4 py-2 rounded-md text-lg font-medium text-[#4b5161] dark:text-[#fdf5eb] hover:text-[#f58b44] transition-colors'>
+              <FaDumbbell className='mr-2' size={18} />
+              <span>Activities</span>
+            </Link>
+            <Link
+              to='/about'
+              className='flex items-center px-4 py-2 rounded-md text-lg font-medium text-[#4b5161] dark:text-[#fdf5eb] hover:text-[#f58b44] transition-colors'>
+              <FaUsers className='mr-2' size={18} />
+              <span>About Us</span>
+            </Link>
+          </div>
+
+          <div className='flex items-center pr-4 sm:pr-6 lg:pr-8'>
+            <button
+              onClick={() => setColorTheme(colorTheme)}
+              className='p-2 rounded-full text-[#4b5161] dark:text-[#fdf5eb] hover:bg-[#fdf5eb] dark:hover:bg-[#4b5161] transition-colors'
+              aria-label={
+                colorTheme === 'light' ? 'Switch to Light Mode' : 'Switch to Dark Mode'
+              }>
+              {colorTheme === 'light' ? (
+                <MdOutlineLightMode size={24} />
+              ) : (
+                <MdOutlineDarkMode size={24} />
+              )}
+            </button>
+            <div className='ml-3'>
+              <WalletProfile />
+            </div>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className='lg:hidden p-2 ml-3 rounded-md text-[#4b5161] dark:text-[#fdf5eb] hover:bg-[#fdf5eb] dark:hover:bg-[#4b5161] transition-colors'
+              aria-label='Toggle menu'>
+              {isMenuOpen ? <MdClose size={26} /> : <MdMenu size={26} />}
+            </button>
+          </div>
         </div>
+      </nav>
+      <div className='h-16'></div>
+    </>
+  )
+}
 
-        <div className='flex items-center'>
-          <a href="/"> <img className='h-8 w-8' src={headspaceLogo} alt="logo" /> </a>
-          <Link to='/' className='pl-2 text-2xl text-black dark:text-white mb-1'> MindChain </Link>
-
-          <span onClick={() => setColorTheme(colorTheme)} className='cursor-pointer ml-6'>
-            {colorTheme === 'light' ?
-              <svg className='h-8 w-8 fill-current text-black dark:text-white' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <title>Switch to Light Mode</title>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-              :
-              <svg className='h-8 w-8 fill-current' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <title>Switch to Dark Mode</title>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </svg>
-            }
-          </span>
-        </div>
-
-        <div className='flex items-center justify-center'>
-          <ul className="ml-16 pr-8 lg:flex hidden text-gray-700 h-20">
-            <li id='articles' className='flex items-center' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-              <Link className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" to={"/activities"}> {t('Navbar.Articles')} </Link>
-              {dropdown && <DropdownMegamenu />}
-            </li>
-            <li id='meditation' className='flex items-center'>
-              <Link className="p-4 text-black dark:text-white hover:text-orange dark:hover:text-orange" to={"/workshop"}> {t('Navbar.Meditation')} </Link>
-            </li>
-          </ul>
-          {/* <div className="ml-4">
-          <WalletProfile />
-        </div> */}
-        </div>
-      </div>
-
-      <div className='flex items-center justify-between w-72'>
-        {/* Wallet Profile Component */}
-        
-        
-        <div>
-        <select onChange={handleChange}
-                    className="outline-none appearance-none py-2 px-3 text-white bg-gray-600 border-white border-2 text-base rounded-full cursor-pointer">
-                    <option value='en' > 
-                        {t('Footer.SelectLanguage.en')} 
-                    </option>
-                    <option value='it' >
-                        {t('Footer.SelectLanguage.it')} 
-                    </option>
-                </select>
-        </div>
-        <WalletProfile />
-      </div>
-    </nav>
-  );
-};
-
-export default Navbar;
+export default Navbar

@@ -1,14 +1,18 @@
 // src/context/WalletContext.js
 import React, { createContext, useState, useCallback, useEffect } from 'react'
-import { ethers, MinInt256 } from 'ethers' // Only import ethers
+import { ethers } from 'ethers' // Only import ethers
 import SoulTokenABI from '../ABI/SoulToken.json'
 import ERC20_ABI from '../ABI/ERC20_ABI.json'
 import { toast } from 'react-toastify'
-import { use } from 'i18next'
+import axios from 'axios'
+import {
+  BackendUrl,
+  ContractAddress as contractAddress,
+  pyusdAddress,
+} from '../data/const'
 export const WalletContext = createContext()
 
 const WalletProvider = ({ children }) => {
-  const OwnerAddress = '0x8Cd1d4f80e1d34410a3792c12f61DE71a59F0a56'
   const [walletAddress, setWalletAddress] = useState(null)
   const [balance, setBalance] = useState(0)
   const [provider, setProvider] = useState(null)
@@ -16,12 +20,32 @@ const WalletProvider = ({ children }) => {
   const [contract, setContract] = useState(null)
   const [pyusdBalance, setPyusdBalance] = useState(0)
   const [pyusdContract, setPyusdContract] = useState(null)
-
-  const contractAddress = '0xe9F0A5CC069b0B3B5B164f9842bb397297A9D8Da' // Replace with actual address
-  // const pyusdAddress = "0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9";
-  const pyusdAddress = '0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9'
+  const [user, setUser] = useState({})
   // Connect Wallet
-
+  const getUser = async () => {
+    try {
+      const res = await axios.post(
+        `${BackendUrl}/user/create-user`,
+        { address: walletAddress },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      if (res.status === 201) {
+        console.log('User created successfully:', res.data.user)
+        setUser(res.data.user)
+      }
+    } catch (err) {
+      console.log(err.response?.data?.message || 'Internal Network Error')
+    }
+  }
+  useEffect(() => {
+    if (contract && walletAddress) {
+      getUser()
+    }
+  }, [walletAddress,contract])
   const connectWallet = useCallback(async () => {
     try {
       if (!window.ethereum) {
@@ -45,13 +69,15 @@ const WalletProvider = ({ children }) => {
       setPyusdContract(pyusdContractu)
       const accounts = await providerInstance.send('eth_requestAccounts', [])
       const userAddress = accounts[0]
-      setWalletAddress(userAddress)
+
       setProvider(providerInstance)
+
+      const tokenBalance = await contractInstance.checkNoOfTokens(userAddress)
+      setBalance(ethers.formatUnits(tokenBalance, 0)) // Fetch initial balance
+      setWalletAddress(userAddress)
       toast.success('Wallet connected successfully!', {
         toastId: 'connect',
       })
-      const tokenBalance = await contractInstance.checkNoOfTokens(userAddress)
-      setBalance(ethers.formatUnits(tokenBalance, 0)) // Fetch initial balance
       const pyusdBalanceu = await pyusdContractu?.balanceOf(userAddress)
       setPyusdBalance(ethers.formatUnits(pyusdBalanceu, 6))
     } catch (error) {
@@ -74,61 +100,88 @@ const WalletProvider = ({ children }) => {
   }
 
   // Earn Tokens
-  const earnTokens = useCallback(async () => {
+  const earnTokens = useCallback(
+    async (token) => {
+      try {
+        if (!contract) {
+          throw new Error ({ message: 'Connect to wallet', code: 'WALLET_NOT_CONNECTED' })
+        }
+        const tx = await contract.earnTokens()
+        await tx.wait()
+        const res = await axios.post(`${BackendUrl}/transaction/token`, {
+          transactionHash: tx?.hash,
+          address: walletAddress,
+          token: token || 'Activity',
+        })
+        if (res.status !== 201)
+          throw new Error('Internal Server Error', res.data?.message)
+        if (res?.data?.user) setUser(res.data.user)
+        console.log(res.data)
+        await fetchBalance()
+        return true
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [contract, fetchBalance, walletAddress]
+  )
+
+  // Reduce Tokens
+  const reduceTokens = async (token, amount, workshopId, reciever) => {
+    // Ensure contract is initialized
+    try {
+      if (!contract) {
+        console.error('Contract is not initialized.')
+        return
+      }
+      if (!workshopId) {
+        throw new Error('No Workshop')
+      }
+      // amount = 60;
+      console.log(token, " " , amount)
+      var amountInWei = ethers.parseUnits(token.toString(), 0)
+      var amountInPyusd = ethers.parseUnits(amount.toString(), 6)
+      console.log(amountInWei ," ", amountInPyusd )
+      const txr = await contract.reduceTokens(
+        amountInWei,
+        amountInPyusd,
+        reciever
+      )
+      await txr.wait()
+      const res = await axios.post(`${BackendUrl}/transaction/workshop`, {
+        transactionHash: txr?.hash,
+        workshopId,
+        address: walletAddress,
+        amount,
+        token,
+      })
+      if (res.status !== 201)
+        throw new Error('Internal Server Error', res.data?.message)
+      if (res?.data?.user) setUser(res.data.user)
+      console.log(res.data)
+      console.log('Transaction successful:', txr)
+      await fetchBalance()
+      return txr
+    } catch (e) {
+      console.error('Error in transaction:', e)
+      throw new Error('Transaction failed: ' + e.reason || e.message)
+    }
+  }
+
+  const approveTokens = async (amount) => {
     if (!contract) {
       throw { message: 'Connect to wallet', code: 'WALLET_NOT_CONNECTED' }
     }
-    const tx = await contract.earnTokens()
-    await tx.wait()
-    await fetchBalance()
+    // amount = 10000000;
+    var amountInPyusd = ethers.parseUnits(amount.toString(), 6)
+    console.log(amountInPyusd)
+    const approvalTz = await pyusdContract.increaseApproval(
+      contractAddress,
+      amountInPyusd
+    )
+    await approvalTz.wait()
     return true
-  }, [contract, fetchBalance])
-
-  // Reduce Tokens
-  const reduceTokens = useCallback(
-    async (token, amount) => {
-      // Ensure contract is initialized
-      try {
-        if (!contract) {
-          console.error('Contract is not initialized.')
-          return
-        }
-        // amount = 60;
-        var amountInWei = ethers.parseUnits(token.toString(), 0)
-        var amountInPyusd = ethers.parseUnits(amount.toString(), 6)
-        const txr = await contract.reduceTokens(
-          amountInWei,
-          amountInPyusd,
-          '0xa97AF66204a3a14D539Ce1cEFF684F7F8D4B4f3D'
-        )
-        await txr.wait()
-        console.log('Transaction successful:', txr)
-        await fetchBalance()
-      } catch (e) {
-        console.error('Error in transaction:', e)
-        throw new Error('Transaction failed: ' + e.reason || e.message)
-      }
-    },
-    [contract, fetchBalance]
-  )
-
-  const approveTokens = useCallback(
-    async (amount) => {
-      if (!contract) {
-        throw { message: 'Connect to wallet', code: 'WALLET_NOT_CONNECTED' }
-      }
-      // amount = 10000000;
-      var amountInPyusd = ethers.parseUnits(amount.toString(), 6)
-      const approvalTz = await pyusdContract.increaseApproval(
-        contractAddress,
-        amountInPyusd
-      )
-      await approvalTz.wait()
-      return true
-    },
-    [contract]
-  )
-
+  }
   // Disconnect Wallet
   const disconnectWallet = useCallback(() => {
     setWalletAddress(null)
@@ -170,6 +223,8 @@ const WalletProvider = ({ children }) => {
         fetchBalance,
         earnTokens,
         reduceTokens,
+        user,
+        setUser,
       }}>
       {children}
     </WalletContext.Provider>

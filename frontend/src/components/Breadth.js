@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-// import "./App.css";
 import "./Breadth.css";
 import playImg from "../assets/svg/play.svg";
 import pauseImg from "../assets/svg/pause.svg";
@@ -9,7 +8,6 @@ import rainAudio from "../assets/sounds/rain.mp3";
 import beachAudio from "../assets/sounds/beach.mp3";
 import { WalletContext } from "../context/WalletContext";
 import { toast } from "react-toastify";
-import { t } from "i18next";
 
 export default function Breadth() {
   let [time, setTime] = useState();
@@ -78,7 +76,7 @@ export default function Breadth() {
   const redeemTokenHandler = async() => {
     try{
       setIsTimerFinished(false)
-      const res = await toast.promise(earnTokens(),{
+      const res = await toast.promise(earnTokens('Concentration Actitvity'),{
         pending: 'Transaction in progress ⏳',
         success: 'Tokens Redeemed Successfully',
         error: {

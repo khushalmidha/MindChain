@@ -1,104 +1,207 @@
-# **MindChain 🎯**  
-MindChain is a **blockchain-integrated platform** where users can earn **Soul Tokens** by engaging in mindful activities and then redeem them for discounts on **exciting workshops**. The platform operates on the Ethereum blockchain, using **ethers.js** to facilitate secure and efficient contract interactions. We employ **PyUSD** for all transactions, providing a stable currency option for users. The frontend is built with React and styled with Tailwind CSS, ensuring a seamless, responsive, and user-friendly experience across devices.
+# **MindChain**
+
+<div align="center">
+  
+  [![React](https://img.shields.io/badge/React-v18.2.0-61dafb.svg)](https://reactjs.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v3.3.0-38bdf8.svg)](https://tailwindcss.com/)
+  [![Solidity](https://img.shields.io/badge/Solidity-v0.8.17-363636.svg)](https://soliditylang.org/)
+  [![Live Site](https://img.shields.io/badge/Live_Site-Vercel-000000.svg)](https://mind-chain.vercel.app/)
+  
+</div>
+
+<p align="center">
+  <b>Where Mindfulness Meets Blockchain Innovation</b>
+</p>
+
+## 🧠 Overview
+
+MindChain is a **blockchain-integrated wellness platform** that rewards users with **Soul Tokens** for engaging in mindfulness activities. These tokens can be redeemed for discounts on expert-led workshops, creating a unique incentive system for mental wellbeing.
+
+Built on Ethereum and utilizing PyUSD for stable transactions, MindChain combines modern frontend technologies with blockchain capabilities to deliver a seamless, responsive user experience across all devices.
 
 ---
 
-## **Demo & Deployed Site 🌐**  
-- **[Demo Video](https://www.loom.com/share/a4d540dff19847e7a8d831a53708db51?sid=c14432f2-0e34-42fe-b6c5-34993cc3709b)**
-- **[Live Site](https://mind-chain.vercel.app/)**
+## ✨ Key Features
+
+### 🪙 Token Economy
+
+- **Earn Soul Tokens:** Complete mindfulness activities like guided meditation and concentration exercises
+- **Token-Based Discounts:** Use accumulated Soul Tokens for significant discounts on workshops (up to 2 PYUSD)
+- **Transaction History:** Track all earnings and spending in a comprehensive dashboard
+
+### 🧘‍♀️ Mindfulness Activities
+
+- **Guided Meditation:** Focus on breathing with customizable ambient sounds and durations
+- **Concentration Exercises:** Improve focus through interactive activities like color matching
+- **Automatic Rewards:** Receive Soul Tokens upon activity completion
+
+### 🛍️ Workshop Marketplace
+
+- **Curated Workshops:** Browse and purchase mindfulness workshops from experts
+- **Creator Platform:** Build and sell your own workshops to the community
+- **Smart Discounts:** Automatically applied based on Soul Token balance
+
+### 💼 Wallet Integration
+
+- **Seamless Connection:** Easy wallet connection via MetaMask or other Web3 providers
+- **Balance Management:** Monitor Soul Tokens and PyUSD in real-time
+- **Secure Transactions:** All purchases and rewards safely recorded on the blockchain
 
 ---
 
-## **Features 🚀**  
-- **Earn Soul Tokens:** Users receive tokens for completing activities.  
-- **Redeem for Workshops:** Tokens can be used to get **discount** on specialized workshops.
-- **PyUSD Transactions:** All transactions are facilitated through **PyUSD** for stability and predictability, adding a stable currency layer to the platform.
-- **Wallet Management:** Implemented using **Context API** to maintain wallet state throughout the app.  
-- **Language Support:** Integrated with **react-i18next** for bilingual support(English and Hindi).  
-- **Blockchain Integration:** Uses **Solidity smart contracts** deployed on Ethereum and interacts via **ethers.js**.  
+## 🖼️ Screenshots
+
+<div align="center">
+
+### Home Page
+
+![image](https://github.com/user-attachments/assets/0303172c-99c2-48b9-9edf-2640f99b9775)
+
+### Activities Dashboard
+
+![image](https://github.com/user-attachments/assets/6bf7c924-186a-4cc5-b7d5-f43ae45e2e1a)
+
+### Workshop Marketplace
+
+![image](https://github.com/user-attachments/assets/9e9d46ed-adfe-4f29-8313-315c5c9b2c6e)
+
+
+### Wallet Integration
+
+![image](https://github.com/user-attachments/assets/301f7e7d-077f-4d55-9b2d-8901d987701f)
+
+
+### Transaction History
+
+![image](https://github.com/user-attachments/assets/57756099-b9dc-49dc-a976-aaefae1db9da)
+
+
+</div>
 
 ---
 
-## **Technologies Used 🛠️**  
-- **Frontend:**  
-  - React  
-  - Tailwind CSS  
-  - Context API for wallet state management  
-  - react-i18next for language translation  
+## 🛠️ Technology Stack
 
-- **Blockchain:**
-  - PYUSD
-  - Solidity  
-  - ethers.js for blockchain interaction  
+<div align="center">
+  
+| Frontend | Backend | Blockchain |
+|:--------:|:-------:|:----------:|
+| React.js | Node.js | Solidity |
+| Tailwind CSS | Express | PyUSD |
+| Context API | MongoDB | Ethereum |
+
+</div>
+
+### Architecture Highlights
+
+- **Responsive Design:** Perfect user experience across all device sizes
+- **State Management:** React Context API for efficient wallet state handling
+- **Internationalization:** Support for English and Hindi languages
+- **Dark/Light Mode:** Toggle between themes for comfortable viewing
+- **Smart Contract Integration:** Direct interaction with Ethereum blockchain
 
 ---
 
-## **Project Structure 📂**  
-```plaintext
+## 📦 Project Structure
+
+```
 MindChain/
-├── contracts/         # Solidity smart contracts
-├── frontend/          # React frontend files
-├── README.md          # Documentation
+├── frontend/                # React frontend application
+│   ├── src/
+│   │   ├── components/      # Reusable UI components
+│   │   ├── context/         # React Context providers
+│   │   ├── hooks/           # Custom React hooks
+│   │   ├── images/          # Static images
+│   │   └── pages/           # Application pages
+│   └── public/              # Public assets
+├── backend/                 # Express server
+│   ├── model/               # MongoDB schemas
+│   ├── routes/              # API endpoints
+│   └── index.js            # Entry point
+├── contracts/               # Solidity smart contracts
+│   ├── SoulToken.sol        # Token contract
+└── README.md                # Project documentation
 ```
 
 ---
 
-## **How to Run Locally 🖥️**  
+## 🚀 Getting Started
 
-1. **Clone the Repository:**  
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- MongoDB
+- MetaMask or compatible Web3 wallet
+
+### Installation
+
+1. **Clone the Repository:**
+
    ```bash
    git clone https://github.com/aditya-gg04/MindChain.git
    cd MindChain
-   
-2. **Install Dependencies:**  
+   ```
+
+2. **Frontend Setup:**
+
    ```bash
    cd frontend
    npm install
-
-3. **Start the Frontend:**  
-   ```bash
    npm start
+   ```
+
+   Frontend will run on http://localhost:3000
+
+3. **Backend Setup:**
+
+   ```bash
+   cd backend
+   npm install
+   npm start
+   ```
+
+   Backend API will be available at http://localhost:8000
+
+4. **Connect Wallet:**
+   - Install MetaMask browser extension
+   - Create or import a wallet
+   - Connect to the application when prompted
 
 ---
 
-## **Screenshots 📸**
+## 🌟 Future Roadmap
 
-1. **Home Page**
-   ![image](https://github.com/user-attachments/assets/656ef89c-41db-4f55-bb13-5421b2f894e7)
-
-2. **Wallet**
-
-   ![WhatsApp Image 2024-11-05 at 13 38 37_84143a6d](https://github.com/user-attachments/assets/e643d0b4-d7b9-4d64-9943-813c61784c5f)
-
-3. **Activities**
-
-   ![WhatsApp Image 2024-11-05 at 13 39 56_74bfffbf](https://github.com/user-attachments/assets/a7b1f3ed-f2cb-4077-bde0-15e60cb84919)
-
-
-4. **Workshops**
-   
-   ![WhatsApp Image 2024-11-05 at 13 41 50_03ab5521](https://github.com/user-attachments/assets/994fc890-ca09-4521-bafe-bb5fbbd7fe21)
+- **Expanded Workshop Categories:** More specialized mindfulness topics
+- **Community Features:** Social interactions and group activities
+- **Achievement System:** Badges and milestones to track progress
+- **Advanced Analytics:** Personalized insights into mindfulness journey
+- **Direct Creator Payments:** Enhanced monetization for workshop creators
 
 ---
 
-## **Challenges Faced & Learnings 🧠**
-- **Smart Contract Interaction:** Managing wallet connections and token transfers was a new challenge.
-- **Context API:** Keeping the wallet state consistent across the frontend required an efficient state management approach.
+
+## � Team
+
+<div align="center">
+
+| <img src="https://github.com/khushalmidha.png" alt="Khushal Midha" width="100" height="100" style="border-radius:50%"/> |
+| :--------------------------------------------------------------------------------: |
+|                                **Khushal Midha**                                   |
+|                                Frontend & Blockchain                               |
+|                    [GitHub](https://github.com/khushalmidha)                        |
+
+</div>
+
 
 ---
 
-## **Future Improvements 🌱**
-- **More Workshops:** Expand the workshop catalog based on user demand.
-- **Leaderboard:** Add a leaderboard to encourage friendly competition among users.
-- **Transaction History:** View tokens transactions
+<p align="center">
+  <b>Be kind to your mind, it will be fine.</b>
+</p>
 
----
+<div align="center">
 
-## **Team 👥**
-- **Lakshya Agarwal** - Frontend and Blockchain Integration - **[Lakshya0000](https://github.com/Lakshya0000)**
-- **Aditya Gunjkar** - Frontend and Blockchain Integration - **[aditya-gg04](https://github.com/aditya-gg04)**
-- **Nachiket Deore** - Smart Contract - **[nachiketdeore09](https://github.com/nachiketdeore09)**
+[![Live Site](https://img.shields.io/badge/Visit_Live_Site-mind--chain.vercel.app-f58b44?style=for-the-badge)](https://mind-chain.vercel.app/)
 
-
-
-
+</div>
