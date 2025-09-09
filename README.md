@@ -202,6 +202,6 @@ MindChain/
 
 <div align="center">
 
-[![Live Site](https://img.shields.io/badge/Visit_Live_Site-mind--chain.vercel.app-f58b44?style=for-the-badge)](https://mind-chain.vercel.app/)
+[![Live Site](https://img.shields.io/badge/Visit_Live_Site-mind--chain.vercel.app-f58b44?style=for-the-badge)](https://mind-chain-dusky.vercel.app/)
 
 </div>
